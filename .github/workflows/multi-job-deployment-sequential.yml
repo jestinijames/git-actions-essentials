@@ -1,4 +1,11 @@
+# This workflow has muliple jobs, one for testing and one for deployment.
+# this workflow runs in sequence
 name: Deploy Project
+# to hva multiple trigger events, we can use the on: keyword
+# to specify multiple events
+# in this case, we are using push event
+# to trigger the workflow
+# if I wanted to add another event, I can do so by adding a comma like [push, pull_request]
 on: push
 jobs:
   test:
@@ -17,6 +24,10 @@ jobs:
         run: npm test
 
   deploy:
+    # This job depends on the test job. It will only run if the test job is successful.
+    # This is how we can run jobs in sequence
+    # deploy will run only if test job is successful
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Get code
