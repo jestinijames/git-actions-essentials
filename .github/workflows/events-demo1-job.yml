@@ -1,0 +1,31 @@
+name: Events Demo 1
+on:
+  # This workflow is triggered on pull request events
+  # The workflow will run when a pull request is opened, edited, or reopened
+  pull_request:
+    types: [opened, edited, reopened]
+    # This workflow is triggered on issue events
+    # The workflow will run when an issue is opened, edited, or reopened
+
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - "dev-*" # This workflow will run on push events to the main branch and any branch that starts with 'dev-'
+      - "feature/**" # feature/new feature/new/button
+      # This workflow will run on push events to the feature directory
+      # If i put path: feature/**, it will run on push events to the feature directory and any subdirectory
+    paths-ignore:
+      - "docs/**" # This workflow will ignore push events to the docs directory
+      - ".github/workflows/**" # This workflow will ignore push events to the .github/workflows directory
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output PR info
+        run: |
+          echo "PR Title: ${{ github.event.pull_request.title }}"
+          echo "PR Body: ${{ github.event.pull_request.body }}"
+          echo "PR Number: ${{ github.event.pull_request.number }}"
+          echo "PR State: ${{ github.event.pull_request.state }}"
+          echo "PR URL: ${{ github.event.pull_request.html_url }}"
